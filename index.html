@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Craftlandia NetBank</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #1a1a1a;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 118, 117, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 177, 153, 0.2) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        header {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(102, 126, 234, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+            animation: slideDown 0.8s ease-out;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        #slogan {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            opacity: 0.95;
+            animation: fadeIn 1s ease-in 0.5s both;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        #slogan i {
+            margin-right: 8px;
+            color: #4ade80;
+            text-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+        }
+
+        main {
+            flex: 0 0 auto;
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            position: relative;
+            animation: slideUp 0.8s ease-out 0.2s both;
+        }
+
+        main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+            border-radius: 24px 24px 0 0;
+        }
+
+        .important {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.15), rgba(255, 235, 59, 0.15));
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            position: relative;
+        }
+        .important::before {
+    content: '\f06a';  /* Font Awesome unicode for fa-circle-exclamation */
+    font-family: "Font Awesome 6 Free";  /* Make sure to use the correct Font Awesome font family */
+    font-weight: 900;  /* Required for solid icons */
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 1.2rem;
+}
+
+
+
+        .important p {
+            padding-left: 40px;
+            margin: 0;
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-top: 20px;
+            color: #4a5568;
+            font-size: 0.95rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 16px 20px;
+            margin-top: 8px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            border: 2px solid rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            margin: 5px 5px 20px 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: linear-gradient(135deg, #e0e0e0, #bdbdbd);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        nav {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        nav button {
+            background: rgba(102, 126, 234, 0.1);
+            color: #4a5568;
+            padding: 12px 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 5px;
+        }
+
+        nav button:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-1px);
+        }
+
+        nav button.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: transparent;
+        }
+
+        nav button.active:hover {
+            background: linear-gradient(135deg, #5a6fd8, #6a4190);
+        }
+
+        #balance {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            padding: 25px;
+            background-color: rgba(102, 126, 234, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #balance::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #balance:hover::before {
+            opacity: 1;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .error {
+            color: #e53e3e;
+            background: linear-gradient(135deg, #fed7d7, #feb2b2);
+            border: 1px solid #fc8181;
+            margin-bottom: 15px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-weight: 500;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .success {
+            color: #38a169;
+            background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
+            border: 1px solid #68d391;
+            margin-bottom: 15px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-weight: 500;
+            animation: bounce 0.6s ease-in-out;
+        }
+
+        .transaction {
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+            padding: 15px 0;
+            font-size: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .transaction:hover {
+            background: rgba(102, 126, 234, 0.05);
+            padding-left: 10px;
+            border-radius: 8px;
+        }
+
+        .transaction.income {
+            color: #38a169;
+            font-weight: 600;
+        }
+
+        .transaction.outcome {
+            color: #e53e3e;
+            font-weight: 600;
+        }
+
+        .loan-request {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 16px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .loan-request:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .loan-request.pending {
+            border-left-color: #ed8936;
+            background: rgba(255, 179, 102, 0.1);
+        }
+
+        .loan-request.approved {
+            border-left-color: #38a169;
+            background: rgba(56, 161, 105, 0.1);
+        }
+
+        .loan-request.rejected {
+            border-left-color: #e53e3e;
+            background: rgba(229, 62, 62, 0.1);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+            font-size: 1.1rem;
+        }
+
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #667eea;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        section {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        /* Animációk */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-5px);
+            }
+            75% {
+                transform: translateX(5px);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+               #slogan {
+            opacity: 0; /* Kezdeti állapot: láthatatlan */
+            transition: opacity 1s ease-in-out; /* Transition használata az animációhoz */
+        }
+
+        #slogan.visible {
+            opacity: 1; /* Látható állapot */
+        }
+
+
+        /* Reszponzív dizájn */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            header {
+                font-size: 1.8rem;
+                padding: 20px 25px;
+            }
+
+            #slogan {
+                font-size: 1.1rem;
+            }
+
+            main {
+                padding: 30px 25px;
+            }
+
+            #balance {
+                font-size: 1.6rem;
+            }
+
+            nav {
+                gap: 8px;
+            }
+
+            nav button {
+                padding: 10px 16px;
+                font-size: 0.85rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                font-size: 1.5rem;
+                padding: 18px 20px;
+            }
+
+            #slogan {
+                font-size: 1rem;
+            }
+
+            main {
+                padding: 25px 20px;
+            }
+
+            button {
+                width: 100%;
+                margin: 5px 0;
+            }
+
+            nav button {
+                flex: 1;
+                min-width: 0;
+            }
+        }
+
+        /* Dark mode támogatás */
+        @media (prefers-color-scheme: dark) {
+            main {
+                background: rgba(30, 30, 30, 0.95);
+                color: #e2e8f0;
+            }
+
+            input, select, textarea {
+                background: rgba(60, 60, 60, 0.9);
+                color: #e2e8f0;
+                border-color: rgba(102, 126, 234, 0.3);
+            }
+
+            label {
+                color: #cbd5e0;
+            }
+
+            .transaction {
+                border-bottom-color: rgba(102, 126, 234, 0.2);
+            }
+
+            .loan-request {
+                background: rgba(60, 60, 60, 0.9);
+            }
+        }
+
+  </style>
+</head>
+<body>
+  <header>
+    Craftlandia NetBank
+  </header>
+
+  <p id="slogan"><i class="fas fa-lock"></i> Biztonságos</p>
+
+  <main>
+    <div class="important">
+<p><strong>Figyelem!</strong> A netbank nem tökéletesen fut! kérjük bármi hiba esetén szóljanak nekünk!</p>
+    </div>
+
+    <!-- Login/Register -->
+    <div id="auth-section">
+      <h2>Bejelentkezés / Regisztráció</h2>
+      <div class="error hidden" id="auth-error"></div>
+      <label for="email">Email cím:</label>
+      <input type="email" id="email" placeholder="Email cím" />
+      <label for="password">Jelszó:</label>
+      <input type="password" id="password" placeholder="Jelszó (min. 6 karakter)" />
+      <button id="login-btn">Bejelentkezés</button>
+      <button id="register-btn">Regisztráció</button>
+    </div>
+
+    <!-- User Dashboard -->
+    <div id="user-section" class="hidden">
+      <div id="balance">Egyenleg: <span id="balance-amount">0</span> KF</div>
+
+      <nav>
+        <button id="nav-home" class="active">Főoldal</button>
+        <button id="nav-transfer">Utalás</button>
+        <button id="nav-loan">Hiteligénylés</button>
+        <button id="nav-logout">Kijelentkezés</button>
+      </nav>
+
+      <section id="home-panel">
+        <h2>Üdvözlünk a NetBankban!</h2>
+        <p>Itt tudod kezelni Craftlandiai KF pénzedet.</p>
+        <div id="recent-transactions">
+          <h3>Legutóbbi tranzakciók:</h3>
+          <div id="transactions-list">
+            <div class="loading">Tranzakciók betöltése...</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="transfer-panel" class="hidden">
+        <h2>Utalás</h2>
+        <div class="error hidden" id="transfer-error"></div>
+        <div class="success hidden" id="transfer-success"></div>
+        <label for="to-email">Címzett email címe:</label>
+        <input type="email" id="to-email" placeholder="pl. valaki@craftlandia.hu" />
+        <label for="amount">Összeg (KF):</label>
+        <input type="number" id="amount" min="1" placeholder="pl. 100" />
+        <label for="transfer-note">Megjegyzés (opcionális):</label>
+        <input type="text" id="transfer-note" placeholder="Utalás célja" />
+        <button id="send-transfer">Utalás küldése</button>
+      </section>
+
+      <section id="loan-panel" class="hidden">
+        <h2>Hiteligénylés</h2>
+        <div class="error hidden" id="loan-error"></div>
+        <div class="success hidden" id="loan-success"></div>
+        <label for="loan-amount">Igényelt összeg (KF):</label>
+        <input type="number" id="loan-amount" min="1000" max="50000" placeholder="pl. 5000" />
+        <label for="loan-reason">Indoklás:</label>
+        <textarea id="loan-reason" placeholder="Miért kéred a hitelt?" rows="3"></textarea>
+        <button id="send-loan-request">Kérelem elküldése</button>
+
+        <h3>Korábbi hiteligényléseid:</h3>
+        <div id="loan-requests-list">
+          <div class="loading">Hiteligénylések betöltése...</div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-section" class="hidden">
+      <h2>Admin Panel - Hiteligénylések kezelése</h2>
+      <div id="loan-requests-admin">
+        <div class="loading">Hiteligénylések betöltése...</div>
+      </div>
+      <button id="admin-logout">Kijelentkezés</button>
+    </div>
+  </main>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  
+  <script>
+    // Firebase konfiguráció - CSERÉLD KI A SAJÁTODRA!
+    const firebaseConfig = {
+      apiKey: "AIzaSyCpmAWPVwLZpslptLHhrv9qDCmg0LMlEOw",
+      authDomain: "craftlandia-netbank.firebaseapp.com",
+      projectId: "craftlandia-netbank",
+      storageBucket: "craftlandia-netbank.appspot.com",
+      messagingSenderId: "839110317925",
+      appId: "1:839110317925:web:8137d415f48b017f00738c"
+    };
+
+    // Firebase inicializálás
+    let auth, db;
+    try {
+      firebase.initializeApp(firebaseConfig);
+      auth = firebase.auth();
+      db = firebase.firestore();
+      console.log('Firebase sikeresen inicializálva');
+    } catch (error) {
+      console.error('Firebase inicializálási hiba:', error);
+      document.querySelector('.firebase-setup').innerHTML += '<br><br><strong style="color: red;">Firebase inicializálási hiba! Ellenőrizd a konfigurációt.</strong>';
+    }
+
+    // Slogan animáció
+    const slogans = [
+      { icon: 'fas fa-lock', text: 'Biztonságos' },
+      { icon: 'fas fa-shield-alt', text: 'Megbízható' },
+      { icon: 'fas fa-bolt', text: 'Egyszerű' }
+    ];
+    let currentSlogan = 0;
+    const sloganEl = document.getElementById('slogan');
+    
+    function changeSlogan() {
+      sloganEl.style.opacity = 0;
+      setTimeout(() => {
+        currentSlogan = (currentSlogan + 1) % slogans.length;
+        sloganEl.innerHTML = `<i class="${slogans[currentSlogan].icon}"></i> ${slogans[currentSlogan].text}`;
+        sloganEl.style.opacity = 1;
+      }, 1000);
+    }
+    setInterval(changeSlogan, 4000);
+
+    // DOM elemek
+    const authSection = document.getElementById('auth-section');
+    const userSection = document.getElementById('user-section');
+    const adminSection = document.getElementById('admin-section');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const loginBtn = document.getElementById('login-btn');
+    const registerBtn = document.getElementById('register-btn');
+    const authError = document.getElementById('auth-error');
+    const balanceAmount = document.getElementById('balance-amount');
+
+    // Navigáció
+    const navHomeBtn = document.getElementById('nav-home');
+    const navTransferBtn = document.getElementById('nav-transfer');
+    const navLoanBtn = document.getElementById('nav-loan');
+    const navLogoutBtn = document.getElementById('nav-logout');
+
+    // Panelek
+    const homePanel = document.getElementById('home-panel');
+    const transferPanel = document.getElementById('transfer-panel');
+    const loanPanel = document.getElementById('loan-panel');
+
+    // Utalás
+    const toEmailInput = document.getElementById('to-email');
+    const amountInput = document.getElementById('amount');
+    const transferNoteInput = document.getElementById('transfer-note');
+    const sendTransferBtn = document.getElementById('send-transfer');
+    const transferError = document.getElementById('transfer-error');
+    const transferSuccess = document.getElementById('transfer-success');
+
+    // Hitel
+    const loanAmountInput = document.getElementById('loan-amount');
+    const loanReasonInput = document.getElementById('loan-reason');
+    const sendLoanRequestBtn = document.getElementById('send-loan-request');
+    const loanError = document.getElementById('loan-error');
+    const loanSuccess = document.getElementById('loan-success');
+    const loanRequestsList = document.getElementById('loan-requests-list');
+
+    // Admin
+    const loanRequestsAdmin = document.getElementById('loan-requests-admin');
+    const adminLogoutBtn = document.getElementById('admin-logout');
+
+    // Listák
+    const transactionsList = document.getElementById('transactions-list');
+
+    // Jelenlegi felhasználó
+    let currentUser = null;
+    let currentUserData = null;
+
+    // Utility függvények
+    function showError(element, message) {
+      element.textContent = message;
+      element.classList.remove('hidden');
+      setTimeout(() => element.classList.add('hidden'), 5000);
+    }
+
+    function showSuccess(element, message) {
+      element.textContent = message;
+      element.classList.remove('hidden');
+      setTimeout(() => element.classList.add('hidden'), 5000);
+    }
+
+    function disableButton(button, text = 'Feldolgozás...') {
+      button.disabled = true;
+      button.textContent = text;
+    }
+
+    function enableButton(button, text) {
+      button.disabled = false;
+      button.textContent = text;
+    }
+
+    // Navigáció
+    function showPanel(panel) {
+      // Összes panel elrejtése
+      homePanel.classList.add('hidden');
+      transferPanel.classList.add('hidden');
+      loanPanel.classList.add('hidden');
+      
+      // Navigációs gombok alaphelyzetbe
+      navHomeBtn.classList.remove('active');
+      navTransferBtn.classList.remove('active');
+      navLoanBtn.classList.remove('active');
+
+      // Kiválasztott panel megjelenítése
+      if (panel === 'home') {
+        homePanel.classList.remove('hidden');
+        navHomeBtn.classList.add('active');
+        loadTransactions();
+      } else if (panel === 'transfer') {
+        transferPanel.classList.remove('hidden');
+        navTransferBtn.classList.add('active');
+      } else if (panel === 'loan') {
+        loanPanel.classList.remove('hidden');
+        navLoanBtn.classList.add('active');
+        loadUserLoanRequests();
+      }
+    }
+
+    // Navigációs event listenerek
+    navHomeBtn.addEventListener('click', () => showPanel('home'));
+    navTransferBtn.addEventListener('click', () => showPanel('transfer'));
+    navLoanBtn.addEventListener('click', () => showPanel('loan'));
+    navLogoutBtn.addEventListener('click', () => auth.signOut());
+    adminLogoutBtn.addEventListener('click', () => auth.signOut());
+
+    // Auth state változás figyelése
+    if (auth) {
+      auth.onAuthStateChanged(async (user) => {
+        if (user) {
+          currentUser = user;
+          console.log('Felhasználó bejelentkezett:', user.email);
+          
+          // Admin ellenőrzés
+          if (user.email === "craftlandiaonnline@gmail.com") {
+            showAdminSection();
+            return;
+          }
+
+          // Normál felhasználó
+          await loadUserData();
+          showUserSection();
+        } else {
+          console.log('Felhasználó kijelentkezett');
+          currentUser = null;
+          currentUserData = null;
+          showAuthSection();
+        }
+      });
+    }
+
+    // Szekciók megjelenítése
+    function showAuthSection() {
+      authSection.classList.remove('hidden');
+      userSection.classList.add('hidden');
+      adminSection.classList.add('hidden');
+      
+      // Mezők törlése
+      emailInput.value = '';
+      passwordInput.value = '';
+      authError.classList.add('hidden');
+    }
+
+    function showUserSection() {
+      authSection.classList.add('hidden');
+      userSection.classList.remove('hidden');
+      adminSection.classList.add('hidden');
+      
+      showPanel('home');
+    }
+
+    function showAdminSection() {
+      authSection.classList.add('hidden');
+      userSection.classList.add('hidden');
+      adminSection.classList.remove('hidden');
+      
+      loadLoanRequestsForAdmin();
+    }
+
+    // Regisztráció
+    registerBtn.addEventListener('click', async () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      
+      if (!email || !password) {
+        showError(authError, 'Kérjük, töltsd ki az összes mezőt!');
+        return;
+      }
+
+      if (password.length < 6) {
+        showError(authError, 'A jelszónak legalább 6 karakter hosszúnak kell lennie!');
+        return;
+      }
+
+      disableButton(registerBtn, 'Regisztráció...');
+
+      try {
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        
+        // Felhasználói adatok létrehozása Firestore-ban
+        await db.collection('users').doc(userCredential.user.uid).set({
+          email: email,
+          balance: 1000, // Kezdő egyenleg
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        // Kezdő tranzakció hozzáadása
+        await db.collection('transactions').add({
+          userId: userCredential.user.uid,
+          type: 'income',
+          amount: 1000,
+          description: 'Regisztrációs bónusz',
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        showSuccess(authError, 'Sikeres regisztráció!');
+        
+      } catch (error) {
+        console.error('Regisztrációs hiba:', error);
+        if (error.code === 'auth/email-already-in-use') {
+          showError(authError, 'Ez az email cím már regisztrálva van!');
+        } else if (error.code === 'auth/invalid-email') {
+          showError(authError, 'Hibás email cím formátum!');
+        } else if (error.code === 'auth/weak-password') {
+          showError(authError, 'A jelszó túl gyenge!');
+        } else {
+          showError(authError, 'Hiba a regisztráció során: ' + error.message);
+        }
+      } finally {
+        enableButton(registerBtn, 'Regisztráció');
+      }
+    });
+
+    // Bejelentkezés
+    loginBtn.addEventListener('click', async () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      
+      if (!email || !password) {
+        showError(authError, 'Kérjük, töltsd ki az összes mezőt!');
+        return;
+      }
+
+      disableButton(loginBtn, 'Bejelentkezés...');
+
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+        showSuccess(authError, 'Sikeres bejelentkezés!');
+      } catch (error) {
+        console.error('Bejelentkezési hiba:', error);
+        if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+          showError(authError, 'Hibás email vagy jelszó!');
+        } else if (error.code === 'auth/invalid-email') {
+          showError(authError, 'Hibás email cím formátum!');
+        } else {
+          showError(authError, 'Hiba a bejelentkezés során: ' + error.message);
+        }
+      } finally {
+        enableButton(loginBtn, 'Bejelentkezés');
+      }
+    });
+
+    // Felhasználói adatok betöltése
+    async function loadUserData() {
+      try {
+        const doc = await db.collection('users').doc(currentUser.uid).get();
+        if (doc.exists) {
+          currentUserData = doc.data();
+          balanceAmount.textContent = currentUserData.balance || 0;
+        } else {
+          // Ha nincs felhasználói adat, hozzuk létre
+          await db.collection('users').doc(currentUser.uid).set({
+            email: currentUser.email,
+            balance: 0,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          currentUserData = { email: currentUser.email, balance: 0 };
+          balanceAmount.textContent = '0';
+        }
+      } catch (error) {
+        console.error('Felhasználói adatok betöltési hiba:', error);
+      }
+    }
+
+    // Tranzakciók betöltése
+    async function loadTransactions() {
+      if (!currentUser) return;
+      
+      try {
+        const snapshot = await db.collection('transactions')
+          .where('userId', '==', currentUser.uid)
+          .orderBy('timestamp', 'desc')
+          .limit(10)
+          .get();
+
+        transactionsList.innerHTML = '';
+        
+        if (snapshot.empty) {
+          transactionsList.innerHTML = '<p>Még nincsenek tranzakciók.</p>';
+          return;
+        }
+
+        snapshot.forEach(doc => {
+          const transaction = doc.data();
+          const div = document.createElement('div');
+          div.className = `transaction ${transaction.type}`;
+          const sign = transaction.type === 'income' ? '+' : '-';
+          const date = transaction.timestamp ? new Date(transaction.timestamp.seconds * 1000).toLocaleString('hu-HU') : 'Ismeretlen dátum';
+          
+          div.innerHTML = `
+            <strong>${sign}${transaction.amount} KF</strong> - ${transaction.description}
+            <br><small>${date}</small>
+          `;
+          transactionsList.appendChild(div);
+        });
+      } catch (error) {
+        console.error('Tranzakciók betöltési hiba:', error);
+        transactionsList.innerHTML = '<p style="color: red;">Hiba a tranzakciók betöltésekor.</p>';
+      }
+    }
+
+// Utalás küldése
+sendTransferBtn.addEventListener('click', async () => {
+    const toEmail = toEmailInput.value.trim();
+    const amount = parseInt(amountInput.value);
+    const note = transferNoteInput.value.trim() || 'Utalás';
+    
+    // Validációk
+    if (!toEmail || !amount) {
+        showError(transferError, 'Kérjük, töltsd ki a kötelező mezőket!');
+        return;
+    }
+
+    if (amount <= 0) {
+        showError(transferError, 'Az összegnek pozitívnak kell lennie!');
+        return;
+    }
+
+    if (amount > currentUserData.balance) {
+        showError(transferError, 'Nincs elegendő egyenleged!');
+        return;
+    }
+
+    if (toEmail === currentUser.email) {
+        showError(transferError, 'Nem utalhatsz magadnak!');
+        return;
+    }
+
+    disableButton(sendTransferBtn, 'Utalás...');
+
+    try {
+        // Címzett keresése
+        const recipientQuery = await db.collection('users').where('email', '==', toEmail).get();
+        
+        if (recipientQuery.empty) {
+            showError(transferError, 'A címzett nem található!');
+            return;
+        }
+
+        const recipientDoc = recipientQuery.docs[0];
+        const recipientData = recipientDoc.data();
+
+        // DEBUG LOG 1 - Utalás résztvevők
+        console.log('DEBUG - Utalás résztvevők:', {
+            sender: {
+                uid: currentUser.uid,
+                email: currentUser.email,
+                currentBalance: currentUserData.balance
+            },
+            recipient: {
+                uid: recipientDoc.id,
+                email: toEmail,
+                currentBalance: recipientData.balance
+            },
+            amount: amount,
+            note: note,
+            timestamp: new Date().toISOString()
+        });
+
+        // Batch tranzakció létrehozása
+        const batch = db.batch();
+
+        // DEBUG LOG 2 - Batch műveletek előkészítése
+        console.log('DEBUG - Batch műveletek előkészítése...');
+
+        // 1. Saját egyenleg csökkentése
+        const myUserRef = db.collection('users').doc(currentUser.uid);
+        batch.update(myUserRef, {
+            balance: firebase.firestore.FieldValue.increment(-amount)
+        });
+
+        // 2. Címzett egyenleg növelése
+        const recipientRef = db.collection('users').doc(recipientDoc.id);
+        batch.update(recipientRef, {
+            balance: firebase.firestore.FieldValue.increment(amount)
+        });
+
+        // 3. Saját (kimenő) tranzakció
+        const myTransactionRef = db.collection('transactions').doc();
+        const myTransactionData = {
+            userId: currentUser.uid,
+            type: 'outcome',
+            amount: amount,
+            description: `Utalás: ${toEmail} - ${note}`,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        batch.set(myTransactionRef, myTransactionData);
+
+        // 4. Címzett (bejövő) tranzakció
+        const recipientTransactionRef = db.collection('transactions').doc();
+        const recipientTransactionData = {
+            userId: recipientDoc.id,
+            type: 'income',
+            amount: amount,
+            description: `Beérkező utalás: ${currentUser.email} - ${note}`,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        batch.set(recipientTransactionRef, recipientTransactionData);
+
+        // DEBUG LOG 3 - Batch műveletek részletei
+        console.log('DEBUG - Batch műveletek:', {
+            senderBalance: {
+                ref: `users/${currentUser.uid}`,
+                update: { balance: firebase.firestore.FieldValue.increment(-amount) }
+            },
+            recipientBalance: {
+                ref: `users/${recipientDoc.id}`,
+                update: { balance: firebase.firestore.FieldValue.increment(amount) }
+            },
+            senderTransaction: {
+                ref: myTransactionRef.id,
+                data: myTransactionData
+            },
+            recipientTransaction: {
+                ref: recipientTransactionRef.id,
+                data: recipientTransactionData
+            }
+        });
+
+        // Batch végrehajtása
+        console.log('DEBUG - Batch commit kezdése...');
+        await batch.commit();
+        console.log('DEBUG - Batch commit sikeres!');
+
+        // Helyi adatok frissítése
+        currentUserData.balance -= amount;
+        balanceAmount.textContent = currentUserData.balance;
+
+        // Siker üzenet
+        showSuccess(transferSuccess, `Sikeres utalás! ${amount} KF elküldve ${toEmail} címzettnek.`);
+        
+        // Mezők törlése
+        toEmailInput.value = '';
+        amountInput.value = '';
+        transferNoteInput.value = '';
+
+    } catch (error) {
+        // DEBUG LOG 4 - Hiba részletek
+        console.error('Batch commit hiba részletek:', {
+            code: error.code,
+            message: error.message,
+            stack: error.stack,
+            details: error
+        });
+        showError(transferError, 'Hiba az utalás során: ' + error.message);
+    } finally {
+        enableButton(sendTransferBtn, 'Utalás küldése');
+    }
+});
+    // Hiteligénylés küldése
+    sendLoanRequestBtn.addEventListener('click', async () => {
+      const amount = parseInt(loanAmountInput.value);
+      const reason = loanReasonInput.value.trim();
+      
+      if (!amount || !reason) {
+        showError(loanError, 'Kérjük, töltsd ki az összes mezőt!');
+        return;
+      }
+
+      if (amount < 1000) {
+        showError(loanError, 'A minimum hiteligénylés 1000 KF!');
+        return;
+      }
+
+      if (amount > 50000) {
+        showError(loanError, 'A maximum hiteligénylés 50000 KF!');
+        return;
+      }
+
+      disableButton(sendLoanRequestBtn, 'Kérelem küldése...');
+
+      try {
+        await db.collection('loanRequests').add({
+          userId: currentUser.uid,
+          userEmail: currentUser.email,
+          amount: amount,
+          reason: reason,
+          status: 'pending',
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        showSuccess(loanSuccess, 'Hiteligénylés sikeresen elküldve!');
+        
+        // Mezők törlése
+        loanAmountInput.value = '';
+        loanReasonInput.value = '';
+        
+        // Lista frissítése
+        loadUserLoanRequests();
+
+      } catch (error) {
+        console.error('Hiteligénylési hiba:', error);
+        showError(loanError, 'Hiba a hiteligénylés során: ' + error.message);
+      } finally {
+        enableButton(sendLoanRequestBtn, 'Kérelem elküldése');
+      }
+    });
+
+    // Felhasználó hiteligénylései
+        async function loadUserLoanRequests() {
+      if (!currentUser) return;
+      try {
+        const snapshot = await db.collection('loanRequests')
+          .where('userId', '==', currentUser.uid)
+          .orderBy('timestamp', 'desc')
+          .get();
+
+        loanRequestsList.innerHTML = '';
+        
+        if (snapshot.empty) {
+          loanRequestsList.innerHTML = '<p>Még nincsenek hiteligénylések.</p>';
+          return;
+        }
+
+        snapshot.forEach(doc => {
+          const request = doc.data();
+          const div = document.createElement('div');
+          div.className = `loan-request ${request.status}`;
+          const date = request.timestamp ? new Date(request.timestamp.seconds * 1000).toLocaleString('hu-HU') : 'Ismeretlen dátum';
+          let statusText = '';
+          switch(request.status) {
+            case 'pending': statusText = 'Függőben'; break;
+            case 'approved': statusText = 'Jóváhagyva'; break;
+            case 'rejected': statusText = 'Elutasítva'; break;
+          }
+          div.innerHTML = `
+            <strong>${request.amount} KF</strong> - ${statusText}
+            <br>
+            <em>${request.reason}</em>
+            <br>
+            <small>${date}</small>
+          `;
+          loanRequestsList.appendChild(div);
+        });
+      } catch (error) {
+        console.error('Hiteligénylések betöltési hiba:', error);
+        loanRequestsList.innerHTML = '<p style="color: red;">Hiba a hiteligénylések betöltésekor.</p>';
+      }
+    }
+
+    // Admin összes hiteligénylés betöltése
+    async function loadLoanRequestsForAdmin() {
+      try {
+        const snapshot = await db.collection('loanRequests')
+          .orderBy('timestamp', 'desc')
+          .limit(30)
+          .get();
+
+        loanRequestsAdmin.innerHTML = '';
+
+        if (snapshot.empty) {
+          loanRequestsAdmin.innerHTML = '<p>Nincsenek hiteligénylések.</p>';
+          return;
+        }
+
+        snapshot.forEach(doc => {
+          const request = doc.data();
+          const div = document.createElement('div');
+          div.className = `loan-request ${request.status}`;
+          const date = request.timestamp ? new Date(request.timestamp.seconds * 1000).toLocaleString('hu-HU') : 'Ismeretlen dátum';
+          let statusText = '';
+          switch(request.status) {
+            case 'pending': statusText = 'Függőben'; break;
+            case 'approved': statusText = 'Jóváhagyva'; break;
+            case 'rejected': statusText = 'Elutasítva'; break;
+          }
+          div.innerHTML = `
+            <strong>${request.amount} KF</strong> - ${statusText}
+            <br>
+            <span><b>${request.userEmail || ''}</b></span>
+            <br>
+            <em>${request.reason}</em>
+            <br>
+            <small>${date}</small>
+            ${request.status === 'pending' ? `
+              <div style="margin-top:7px;">
+                <button onclick="approveLoanRequest('${doc.id}', ${request.amount}, '${request.userId}')">Jóváhagyás</button>
+                <button onclick="rejectLoanRequest('${doc.id}')">Elutasítás</button>
+              </div>
+            ` : ''}
+          `;
+          loanRequestsAdmin.appendChild(div);
+        });
+      } catch (error) {
+        console.error('Admin hiteligénylések betöltési hiba:', error);
+        loanRequestsAdmin.innerHTML = '<p style="color: red;">Hiba a hiteligénylések betöltésekor.</p>';
+      }
+    }
+
+    // Admin jóváhagyás/elutasítás
+    window.approveLoanRequest = async function(id, amount, userId) {
+      if (!confirm('Biztosan jóváhagyod ezt a hiteligénylést?')) return;
+      try {
+        await db.collection('loanRequests').doc(id).update({ status: 'approved' });
+        // Felhasználó egyenlegének növelése
+        await db.collection('users').doc(userId).update({
+          balance: firebase.firestore.FieldValue.increment(amount)
+        });
+        // Tranzakció log hozzáadása
+        await db.collection('transactions').add({
+          userId: userId,
+          type: 'income',
+          amount: amount,
+          description: 'Hitel jóváhagyva',
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        loadLoanRequestsForAdmin();
+      } catch (error) {
+        alert('Hiba a jóváhagyás során: ' + error.message);
+      }
+    };
+
+    window.rejectLoanRequest = async function(id) {
+      if (!confirm('Biztosan elutasítod ezt a hiteligénylést?')) return;
+      try {
+        await db.collection('loanRequests').doc(id).update({ status: 'rejected' });
+        loadLoanRequestsForAdmin();
+      } catch (error) {
+        alert('Hiba az elutasítás során: ' + error.message);
+      }
+    };
+
+    // Oldal betöltésekor:
+    // (A Firebase auth observer már meghívja a megfelelő show*Section-t és onnan a loadokat)
+
+  </script>
+</body>
+</html>
