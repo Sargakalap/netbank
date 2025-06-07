@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Craftlandia NetBank</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
   <style>
     * {
             margin: 0;
@@ -589,7 +590,7 @@
 
   <main>
     <div class="important">
-<p><strong>Figyelem!</strong> A netbank nem tökéletesen fut! kérjük bármi hiba esetén szóljanak nekünk! Email: <a href="mailto:craftlandiaonnline@gmail.com">Craftlandiaonnline@gmail.com</a></p>
+<p><strong>Figyelem!</strong> A netbank nem tökéletesen fut! kérjük bármi hiba esetén szóljanak nekünk!</p>
     </div>
 
     <!-- Login/Register -->
@@ -600,6 +601,10 @@
       <input type="email" id="email" placeholder="Email cím" />
       <label for="password">Jelszó:</label>
       <input type="password" id="password" placeholder="Jelszó (min. 6 karakter)" />
+          <form action="" method="POST">
+      <div class="g-recaptcha" data-sitekey="6LceRFgrAAAAAJ_IKpPbSC_UQAYl1B5gCQatWp1d" data-action="LOGIN"></div>
+      <br/>
+    </form>
       <button id="login-btn">Bejelentkezés</button>
       <button id="register-btn">Regisztráció</button>
     </div>
